@@ -1,6 +1,6 @@
 <?php
 /**
- * کلاس مدیریت تنظیمات ایران اسپید پرو
+ * کلاس مدیریت تنظیمات افزونه
  * مسیر: includes/class-settings-handler.php
  */
 
@@ -15,17 +15,16 @@ if (!class_exists('ISP_Settings_Handler')) {
         private $option_name = 'iran_speed_pro_settings';
 
         /**
-         * دریافت تمام تنظیمات به صورت یکجا با مقادیر پیش‌فرض
+         * دریافت تمام تنظیمات با مقادیر پیش‌فرض
          */
         public function get_all_settings() {
             $defaults = array(
-                'cache_enabled'      => 1,
                 'webp_enabled'       => 0,
                 'heartbeat_mode'     => 'modify',
                 'heartbeat_interval' => 60,
                 'security_shield'    => 1,
-                'log_enabled'        => 1,
-                'last_cleanup'       => ''
+                'cleanup_interval'   => 'weekly',
+                'log_enabled'        => 1
             );
 
             $settings = get_option($this->option_name, $defaults);
@@ -33,27 +32,20 @@ if (!class_exists('ISP_Settings_Handler')) {
         }
 
         /**
-         * ذخیره یک تنظیم خاص
+         * بروزرسانی یک تنظیم خاص
          */
-        public function set_setting($key, $value) {
+        public function update_setting($key, $value) {
             $settings = $this->get_all_settings();
             $settings[$key] = $value;
             return update_option($this->option_name, $settings);
         }
 
         /**
-         * خواندن یک تنظیم خاص
+         * دریافت مقدار یک کلید خاص
          */
-        public function get_setting($key) {
+        public function get_setting($key, $default = false) {
             $settings = $this->get_all_settings();
-            return isset($settings[$key]) ? $settings[$key] : null;
-        }
-
-        /**
-         * پاکسازی کل تنظیمات (هنگام حذف افزونه)
-         */
-        public function delete_all_settings() {
-            return delete_option($this->option_name);
+            return isset($settings[$key]) ? $settings[$key] : $default;
         }
     }
 }

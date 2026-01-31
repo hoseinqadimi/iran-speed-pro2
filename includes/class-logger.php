@@ -1,6 +1,6 @@
 <?php
 /**
- * کلاس ثبت گزارشات و لاگ‌های افزونه
+ * کلاس ثبت گزارشات عملیاتی
  * مسیر: includes/class-logger.php
  */
 
@@ -12,48 +12,37 @@ if (!class_exists('ISP_Logger')) {
 
     class ISP_Logger {
 
-        private static $log_file;
-
-        /**
-         * تنظیم مسیر فایل لاگ در پوشه آپلود وردپرس
-         */
-        public static function init() {
+        private static function get_log_path() {
             $upload_dir = wp_upload_dir();
-            self::$log_file = $upload_dir['basedir'] . '/isp-logs.log';
+            return $upload_dir['basedir'] . '/isp-activity.log';
         }
 
         /**
-         * ثبت یک پیام در فایل لاگ
-         * @param string $message متن گزارش
-         * @param string $type نوع گزارش (info, error, success)
+         * ثبت لاگ جدید
          */
-        public static function log($message, $type = 'info') {
-            self::init();
-            $timestamp = current_time('mysql');
-            $formatted_message = "[{$timestamp}] [{$type}]: {$message}" . PHP_EOL;
+        public static function log($message, $level = 'INFO') {
+            $time = current_time('mysql');
+            $entry = "[{$time}] [{$level}]: {$message}" . PHP_EOL;
+            file_put_contents(self::get_log_path(), $entry, FILE_APPEND);
+        }
+
+        /**
+         * دریافت گزارش‌ها برای نمایش
+         */
+        public static function get_logs($count = 20) {
+            $file = self::get_log_path();
+            if (!file_exists($file)) return array('هنوز گزارشی ثبت نشده است.');
             
-            error_log($formatted_message, 3, self::$log_file);
+            $logs = file($file);
+            return array_slice(array_reverse($logs), 0, $count);
         }
 
         /**
-         * خواندن آخرین گزارش‌ها برای نمایش در پنل مدیریت
+         * حذف فایل لاگ
          */
-        public static function get_logs($limit = 50) {
-            self::init();
-            if (!file_exists(self::$log_file)) {
-                return 'هنوز گزارشی ثبت نشده است.';
-            }
-            $logs = file(self::$log_file);
-            return array_slice(array_reverse($logs), 0, $limit);
-        }
-
-        /**
-         * پاکسازی کامل فایل لاگ
-         */
-        public static function clear_logs() {
-            self::init();
-            if (file_exists(self::$log_file)) {
-                unlink(self::$log_file);
+        public static function purge() {
+            if (file_exists(self::get_log_path())) {
+                unlink(self::get_log_path());
             }
         }
     }

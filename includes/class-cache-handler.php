@@ -13,36 +13,28 @@ if (!class_exists('ISP_Cache_Handler')) {
     class ISP_Cache_Handler {
 
         /**
-         * پاکسازی تمام حافظه‌های کش در دسترس
+         * پاکسازی سراسری کش
          */
         public function clear_all_cache() {
-            $this->clear_wp_object_cache();
-            $this->clear_opcache();
-            $this->clear_third_party_plugins();
+            // ۱. پاکسازی کش داخلی وردپرس
+            wp_cache_flush();
+
+            // ۲. پاکسازی PHP OPCache
+            if (function_exists('opcache_reset')) {
+                @opcache_reset();
+            }
+
+            // ۳. پاکسازی افزونه‌های جانبی
+            $this->clear_third_party();
+
             return true;
         }
 
         /**
-         * پاکسازی Object Cache وردپرس
+         * تعامل با لایت‌اسپید، راکت و غیره
          */
-        private function clear_wp_object_cache() {
-            wp_cache_flush();
-        }
-
-        /**
-         * پاکسازی PHP OPCache (در صورت فعال بودن روی سرور)
-         */
-        private function clear_opcache() {
-            if (function_exists('opcache_reset')) {
-                @opcache_reset();
-            }
-        }
-
-        /**
-         * هماهنگی با افزونه‌های کش معروف (WP Rocket, LiteSpeed, Fast-Cache)
-         */
-        private function clear_third_party_plugins() {
-            // LiteSpeed Cache
+        private function clear_third_party() {
+            // LiteSpeed
             if (has_action('litespeed_purge_all')) {
                 do_action('litespeed_purge_all');
             }
@@ -50,9 +42,9 @@ if (!class_exists('ISP_Cache_Handler')) {
             if (function_exists('rocket_clean_domain')) {
                 rocket_clean_domain();
             }
-            // Autoptimize
-            if (class_exists('autoptimizeCache')) {
-                autoptimizeCache::clearall();
+            // WP Fast Cache
+            if (isset($GLOBALS['wp_fastest_cache']) && method_exists($GLOBALS['wp_fastest_cache'], 'deleteCache')) {
+                $GLOBALS['wp_fastest_cache']->deleteCache();
             }
         }
     }
