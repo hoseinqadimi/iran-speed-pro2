@@ -1,0 +1,75 @@
+{
+  "plugins": {
+    "woocommerce": {
+      "name": "WooCommerce",
+      "tables": [
+        "woocommerce_api_keys",
+        "woocommerce_attribute_taxonomies",
+        "woocommerce_downloadable_product_permissions",
+        "woocommerce_order_items",
+        "woocommerce_order_itemmeta",
+        "woocommerce_payment_tokens",
+        "woocommerce_payment_tokenmeta",
+        "woocommerce_log",
+        "woocommerce_sessions",
+        "woocommerce_shipping_zones",
+        "woocommerce_shipping_zone_locations",
+        "woocommerce_shipping_zone_methods",
+        "woocommerce_tax_rates",
+        "woocommerce_tax_rate_locations"
+      ]
+    },
+    "elementor": {
+      "name": "Elementor",
+      "tables": [
+        "elementor_library"
+      ]
+    },
+    "yoast_seo": {
+      "name": "Yoast SEO",
+      "tables": [
+        "yoast_indexable",
+        "yoast_indexable_hierarchy",
+        "yoast_migrations",
+        "yoast_primary_term",
+        "yoast_seo_links"
+      ]
+    },
+    "contact_form_7": {
+      "name": "Contact Form 7",
+      "tables": [
+        "contact_form_7"
+      ]
+    },
+    "wp_forms": {
+      "name": "WPForms",
+      "tables": [
+        "wpforms_tasks_meta"
+      ]
+    },
+    "revslider": {
+      "name": "Revolution Slider",
+      "tables": [
+        "revslider_sliders",
+        "revslider_slides",
+        "revslider_static_slides",
+        "revslider_css",
+        "revslider_layer_animations",
+        "revslider_navigations"
+      ]
+    },
+    "wordfence": {
+      "name": "Wordfence",
+      "tables": [
+        "wfconfig",
+        "wflocs",
+        "wflogins",
+        "wffilemods",
+        "wfhits",
+        "wfhoover",
+        "wfissues",
+        "wfknownfilelist"
+      ]
+    }
+  }
+}
