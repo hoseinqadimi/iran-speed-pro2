@@ -1,0 +1,49 @@
+/* استایل کلی داشبورد ایران اسپید */
+.isp-dashboard-wrapper {
+    margin: 20px 20px 0 0;
+    font-family: 'Tahoma', sans-serif;
+    direction: rtl;
+}
+
+.isp-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.isp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.isp-button {
+    background-color: #0073aa;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.isp-button:hover {
+    background-color: #005177;
+}
+
+.isp-button.secondary {
+    background-color: #23282d;
+}
+
+/* استایل وضعیت‌ها */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+.status-active { background: #e7ffec; color: #27ae60; }
