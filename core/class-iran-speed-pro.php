@@ -1,14 +1,13 @@
 <?php
 /**
  * Iran Speed Pro 2 - Core Loader Class
- * * این فایل مسئولیت بارگذاری تمامی پیش‌نیازها و راه‌اندازی هوک‌های اصلی افزونه را بر عهده دارد.
+ * این فایل مسئول مدیریت چرخه حیات افزونه و بارگذاری تمامی زیرمجموعه‌هاست.
  * * @package    Iran_Speed_Pro
  * @subpackage Iran_Speed_Pro/core
- * @author     Hosein Qadimi
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; // جلوگیری از دسترسی مستقیم
+    exit; // امنیت: جلوگیری از دسترسی مستقیم به فایل
 }
 
 if ( ! class_exists( 'Iran_Speed_Pro' ) ) {
@@ -16,7 +15,7 @@ if ( ! class_exists( 'Iran_Speed_Pro' ) ) {
     class Iran_Speed_Pro {
 
         /**
-         * نام منحصر به فرد افزونه برای تعریف هوک‌ها و اسلاگ‌ها
+         * نام منحصر به فرد افزونه
          */
         protected $plugin_name;
 
@@ -26,7 +25,7 @@ if ( ! class_exists( 'Iran_Speed_Pro' ) ) {
         protected $version;
 
         /**
-         * سازنده کلاس - نقطه شروع اجرای منطق افزونه
+         * سازنده کلاس - نقطه آغازین تمام فرآیندها
          */
         public function __construct() {
             $this->plugin_name = 'iran-speed-pro';
@@ -34,45 +33,50 @@ if ( ! class_exists( 'Iran_Speed_Pro' ) ) {
 
             $this->load_dependencies();
             $this->set_locale();
-            $this->define_admin_hooks();
+            
+            // فقط در صورت حضور در پنل مدیریت، کلاس مدیریت را لود کن (بهینه سازی مصرف رم)
+            if ( is_admin() ) {
+                $this->define_admin_hooks();
+            }
         }
 
         /**
          * بارگذاری تمامی ۱۵ فایل موجود در پوشه includes
-         * ترتیب بارگذاری بر اساس اولویت وابستگی فایل‌ها تنظیم شده است.
+         * نکته تخصصی: ترتیب بارگذاری بر اساس وابستگی کلاس‌ها (Dependency) رعایت شده است.
          */
         private function load_dependencies() {
             $inc_path = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/';
 
-            // ۱. بارگذاری فایل‌های زیرساختی و ابزارها
+            // ۱. لایه پایه (Infrastructure) - بقیه کلاس‌ها به این ۳ فایل نیاز دارند
             require_once $inc_path . 'class-helper.php';
             require_once $inc_path . 'class-settings-handler.php';
             require_once $inc_path . 'class-logger.php';
 
-            // ۲. بارگذاری ماژول‌های بهینه‌سازی دیتابیس و فایل
+            // ۲. لایه عملیاتی (Operations)
             require_once $inc_path . 'class-db-optimizer.php';
-            require_once $inc_path . 'class-orphan-detector.php';
             require_once $inc_path . 'class-cache-handler.php';
+            require_once $inc_path . 'class-orphan-detector.php';
             
-            // ۳. بارگذاری ماژول‌های مدیریت رسانه
+            // ۳. لایه رسانه و فایل (Media & Files)
             require_once $inc_path . 'class-webp-converter.php';
             require_once $inc_path . 'class-image-cleaner.php';
             
-            // ۴. بارگذاری ماژول‌های امنیتی و نظارتی
-            require_once $inc_path . 'class-network-shield.php';
-            require_once $inc_path . 'class-integrity-checker.php';
+            // ۴. لایه نظارت و امنیت (Monitoring & Security)
             require_once $inc_path . 'class-resource-monitor.php';
+            require_once $inc_path . 'class-integrity-checker.php';
+            require_once $inc_path . 'class-network-shield.php';
             
-            // ۵. بارگذاری ماژول‌های کنترل فرانت‌ند و اسکریپت‌ها
+            // ۵. لایه کنترل اسکریپت و بهینه‌سازی فرانت (Frontend Opt)
             require_once $inc_path . 'class-script-manager.php';
             require_once $inc_path . 'class-heartbeat-control.php';
-            
-            // ۶. بارگذاری رابط‌های دیتای JSON (در صورت وجود)
-            // require_once $inc_path . 'class-json-handler.php'; 
+
+            // ۶. لایه داده‌های JSON و مکمل
+            // در صورتی که فایل class-json-handler.php در سیستم شما موجود است، خط زیر را فعال کنید:
+            // require_once $inc_path . 'class-json-handler.php';
         }
 
         /**
-         * تنظیمات محلی‌سازی و فایل‌های ترجمه (i18n)
+         * تنظیمات مربوط به ترجمه و بومی‌سازی افزونه
          */
         private function set_locale() {
             add_action( 'plugins_loaded', function() {
@@ -85,44 +89,32 @@ if ( ! class_exists( 'Iran_Speed_Pro' ) ) {
         }
 
         /**
-         * ثبت و راه‌اندازی کلاس مدیریت (Admin Area)
-         * این بخش فقط در صورتی که کاربر در پیشخوان باشد لود می‌شود تا پرفورمنس سایت حفظ شود.
+         * تعریف و ثبت هوک‌های مربوط به پنل مدیریت (Admin)
          */
         private function define_admin_hooks() {
-            if ( is_admin() ) {
-                require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-iran-speed-pro-admin.php';
+            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-iran-speed-pro-admin.php';
 
-                // ایجاد نمونه از کلاس مدیریت و پاس دادن متغیرهای اصلی
-                $admin = new ISP_Admin( $this->plugin_name, $this->version );
+            // ایجاد نمونه از کلاس مدیریت و تزریق متغیرهای اصلی به آن
+            $admin = new ISP_Admin( $this->plugin_name, $this->version );
 
-                // ثبت منوی اصلی در پنل وردپرس
-                add_action( 'admin_menu', array( $admin, 'add_menu' ) );
-
-                // ثبت فایل‌های CSS و JS در صفحات مدیریت
-                add_action( 'admin_enqueue_scripts', array( $admin, 'enqueue_assets' ) );
-            }
+            // اتصال متدهای کلاس مدیریت به اکشن‌های وردپرس
+            add_action( 'admin_menu', array( $admin, 'add_menu' ) );
+            add_action( 'admin_enqueue_scripts', array( $admin, 'enqueue_assets' ) );
         }
 
         /**
-         * متد اجرای نهایی
-         * این متد در فایل ریشه (Root) صدا زده می‌شود تا فرآیند شروع به کار افزونه را تکمیل کند.
+         * اجرای نهایی افزونه
+         * این متد از فایل اصلی (Root) صدا زده می‌شود.
          */
         public function run() {
-            // ثبت گزارش در لاگ افزونه جهت اطمینان از صحت بارگذاری کامل
+            // ثبت لاگ سیستمی برای تایید لود کامل تمام ماژول‌ها
             if ( class_exists( 'ISP_Logger' ) ) {
-                ISP_Logger::log( "Core Engine Started Successfully. Version: " . $this->version );
+                ISP_Logger::log( "Iran Speed Pro Core [v{$this->version}] fully initialized." );
             }
         }
 
         /**
-         * دریافت نام افزونه (Getter)
-         */
-        public function get_plugin_name() {
-            return $this->plugin_name;
-        }
-
-        /**
-         * دریافت نسخه افزونه (Getter)
+         * متد دریافت نسخه افزونه (Getter)
          */
         public function get_version() {
             return $this->version;
