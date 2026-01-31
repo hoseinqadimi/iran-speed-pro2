@@ -1,0 +1,132 @@
+/* استایل اختصاصی ایران اسپید پرو */
+.isp-admin-wrapper {
+    margin: 20px 20px 0 0;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+/* هدر پنل */
+.isp-header {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.isp-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #1d2327;
+}
+
+.isp-header .version {
+    font-size: 12px;
+    background: #007cba;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+/* بدنه اصلی پنل */
+.isp-container {
+    display: flex;
+    gap: 20px;
+}
+
+/* سایدبار (منوی عمودی) */
+.isp-sidebar {
+    width: 240px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    height: fit-content;
+}
+
+.isp-tabs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.isp-tabs li {
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    color: #50575e;
+    font-weight: 500;
+}
+
+.isp-tabs li:hover {
+    background: rgba(0, 124, 186, 0.1);
+    color: #007cba;
+}
+
+.isp-tabs li.active {
+    background: #007cba;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 124, 186, 0.3);
+}
+
+/* محتوای سمت چپ */
+.isp-main-content {
+    flex: 1;
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #e2e8f0;
+    min-height: 400px;
+}
+
+/* کارت‌های داشبورد */
+.isp-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.isp-card {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #edf2f7;
+    text-align: center;
+}
+
+.isp-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #4a5568;
+}
+
+.isp-card .score, .isp-card .count {
+    font-size: 28px;
+    font-weight: bold;
+    color: #007cba;
+}
+/* مخفی کردن محتواهای غیرفعال */
+.isp-tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+/* نمایش محتوای فعال */
+.isp-tab-content.active {
+    display: block;
+}
+
+/* انیمیشن نرم برای ورود محتوا */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
