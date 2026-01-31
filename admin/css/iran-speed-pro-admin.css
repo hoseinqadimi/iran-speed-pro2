@@ -1,49 +1,203 @@
-/* استایل کلی داشبورد ایران اسپید */
+/**
+ * Iran Speed Pro 2 - Admin Stylesheet
+ * تمامی استایل‌ها با پیشوند isp برای جلوگیری از تداخل با سایر بخش‌های وردپرس نوشته شده‌اند.
+ * @package    Iran_Speed_Pro
+ * @author     Hosein Qadimi
+ */
+
+/* تعریف متغیرهای رنگی برای یکپارچگی */
+:root {
+    --isp-primary: #0073aa;
+    --isp-secondary: #2271b1;
+    --isp-success: #46b450;
+    --isp-warning: #ffb900;
+    --isp-danger: #d63638;
+    --isp-dark: #1d2327;
+    --isp-bg: #f0f0f1;
+    --isp-white: #ffffff;
+    --isp-border: #ccd0d4;
+    --isp-log-bg: #1d2327;
+}
+
+/* ظرف اصلی داشبورد */
 .isp-dashboard-wrapper {
     margin: 20px 20px 0 0;
-    font-family: 'Tahoma', sans-serif;
     direction: rtl;
+    font-family: Tahoma, Arial, sans-serif;
+    max-width: 1200px;
 }
 
-.isp-card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
+/* هدر داشبورد */
 .isp-header {
+    background: var(--isp-white);
+    padding: 20px 30px;
+    border-radius: 10px;
+    border: 1px solid var(--isp-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #f1f1f1;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
 }
 
-.isp-button {
-    background-color: #0073aa;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.3s;
+.isp-brand {
+    display: flex;
+    align-items: center;
 }
 
-.isp-button:hover {
-    background-color: #005177;
+.isp-brand .dashicons {
+    font-size: 35px;
+    width: 35px;
+    height: 35px;
+    color: var(--isp-primary);
+    margin-left: 15px;
 }
 
-.isp-button.secondary {
-    background-color: #23282d;
+.isp-brand h1 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--isp-dark);
 }
 
-/* استایل وضعیت‌ها */
-.status-badge {
-    padding: 5px 10px;
+.isp-brand h1 small {
+    font-size: 11px;
+    background: var(--isp-primary);
+    color: var(--isp-white);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* چیدمان شبکه‌ای کارت‌ها */
+.isp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+/* استایل کارت‌ها */
+.isp-card {
+    background: var(--isp-white);
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid var(--isp-border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.isp-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.isp-card h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--isp-bg);
+    color: var(--isp-dark);
+}
+
+/* آمارهای داخل کارت */
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 8px 0;
+}
+
+.stat-row span {
+    color: #646970;
+}
+
+.stat-row strong {
+    color: var(--isp-dark);
+    font-size: 15px;
+}
+
+/* بخش لاگ (گزارشات) */
+.isp-log-viewer {
+    background: var(--isp-log-bg) !important;
+    border: none !important;
+}
+
+.isp-log-viewer h3 {
+    color: var(--isp-white) !important;
+    border-bottom-color: #3c434a !important;
+}
+
+.log-body {
+    background: #2c3338;
+    border-radius: 6px;
+    padding: 15px;
+    height: 180px;
+    overflow-y: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.log-entry {
+    color: #dcdcde;
+    border-bottom: 1px solid #3c434a;
+    padding: 5px 0;
+}
+
+.log-time {
+    color: #72aee6;
+    margin-left: 10px;
+}
+
+/* وضعیت‌های بصری دکمه‌ها */
+.button-primary {
+    background: var(--isp-primary) !important;
+    border-color: var(--isp-primary) !important;
+    font-weight: bold !important;
+    padding: 0 20px !important;
+    height: 40px !important;
+    line-height: 38px !important;
+}
+
+.updating-message {
+    cursor: wait !important;
+    opacity: 0.7;
+    position: relative;
+}
+
+/* انیمیشن برای دایره وضعیت سرور */
+.status-dot {
+    height: 10px;
+    width: 10px;
+    background-color: var(--isp-success);
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 8px;
+    box-shadow: 0 0 8px var(--isp-success);
+    animation: isp-pulse 2s infinite;
+}
+
+@keyframes isp-pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(70, 180, 80, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(70, 180, 80, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(70, 180, 80, 0); }
+}
+
+/* استایل نشانگرها (Badges) */
+.badge {
+    padding: 3px 10px;
     border-radius: 12px;
     font-size: 12px;
 }
-.status-active { background: #e7ffec; color: #27ae60; }
+.badge.warning { background: #fff8e5; color: #856404; border: 1px solid #ffeeba; }
+.badge.success { background: #e7ffec; color: #1e7336; border: 1px solid #c3e6cb; }
+
+/* ریسپانسیو برای موبایل */
+@media (max-width: 782px) {
+    .isp-header { flex-direction: column; text-align: center; }
+    .isp-brand { margin-bottom: 15px; }
+    .isp-grid { grid-template-columns: 1fr; }
+}
